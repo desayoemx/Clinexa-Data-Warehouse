@@ -10,9 +10,9 @@ import json
 import time
 
 from airflow.utils.context import Context
-from include.monitoring.exceptions import RequestExhaustionError
+from src.monitoring.exceptions import RequestExhaustionError
 from config.env_config import config
-from include.etl.extraction.checkpoint import StateHandler
+from src.etl.extraction.checkpoint import StateHandler
 
 
 class Extractor:
