@@ -1,0 +1,17 @@
+
+[project]
+name = "clinexa_data_warehouse"
+version = "1.0"
+readme = "README.md"
+requires-python = ">=3.10"
+
+
+dependencies = []
+
+[tool.setuptools]
+include-package-data = true
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dags*", "infra*", "config*", "src*", "plugins*"]
+exclude = ["tests*"]
+
