@@ -2,8 +2,8 @@ import time
 from unittest.mock import patch
 
 
-@patch("src.etl.extraction.StateHandler")
-@patch("src.etl.extraction.config")
+@patch("src.etl.extraction.checkpoint.StateHandler")
+@patch("src.etl.extraction.extraction.config")
 def test_rate_limit_window_calculation(
     mock_config, mock_state_handler, mock_context, mock_s3_hook
 ):
@@ -14,7 +14,7 @@ def test_rate_limit_window_calculation(
         "next_page_url": "https://api.ctgov.com/studies",
     }
 
-    from src.etl.extraction import Extractor
+    from src.etl.extraction.extraction import Extractor
 
     extractor = Extractor(mock_context, mock_s3_hook)
     extractor.max_requests = 5
@@ -30,9 +30,9 @@ def test_rate_limit_window_calculation(
     assert len(extractor.requests) == 5
 
 
-@patch("src.etl.extraction.time.sleep")
-@patch("src.etl.extraction.StateHandler")
-@patch("src.etl.extraction.config")
+@patch("src.etl.extraction.extraction.time.sleep")
+@patch("src.etl.extraction.checkpoint.StateHandler")
+@patch("src.etl.extraction.extraction.config")
 def test_rate_limit_triggers_sleep(
     mock_config, mock_state_handler, mock_sleep, mock_context, mock_s3_hook
 ):
@@ -43,7 +43,7 @@ def test_rate_limit_triggers_sleep(
         "next_page_url": "https://api.ctgov.com/studies",
     }
 
-    from src.etl.extraction import Extractor
+    from src.etl.extraction.extraction import Extractor
 
     extractor = Extractor(mock_context, mock_s3_hook)
     extractor.max_requests = 3

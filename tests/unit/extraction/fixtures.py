@@ -5,21 +5,39 @@ from unittest.mock import MagicMock, patch, PropertyMock
 
 @pytest.fixture
 def mock_context():
-    """Create a mock Airflow context."""
+    mock_ti = MagicMock(task_id="extract_studies", try_number=1)
+    mock_dag = MagicMock(dag_id="clinical_trials_etl")
+
+    context_dict = {
+        "ds": "2026-01-15",
+        "task_instance": mock_ti,
+        "dag": mock_dag,
+        "run_id": "manual__2026-01-15T00:00:00+00:00",
+    }
+
     context = MagicMock()
-    context.get.side_effect = lambda key: {
-        "ds": "2026-01-15",
-        "task_instance": MagicMock(task_id="extract_studies", try_number=1),
-        "dag": MagicMock(dag_id="clinical_trials_etl"),
-        "run_id": "manual__2026-01-15T00:00:00+00:00",
-    }.get(key)
-    context.__getitem__ = lambda self, key: {
-        "ds": "2026-01-15",
-        "task_instance": MagicMock(task_id="extract_studies", try_number=1),
-        "dag": MagicMock(dag_id="clinical_trials_etl"),
-        "run_id": "manual__2026-01-15T00:00:00+00:00",
-    }.get(key)
+    context.get.side_effect = lambda key: context_dict.get(key)
+    context.__getitem__.side_effect = lambda key: context_dict.get(key)
+
     return context
+
+# @pytest.fixture
+# def mock_context():
+#     """Create a mock Airflow context."""
+#     context = MagicMock()
+#     context.get.side_effect = lambda key: {
+#         "ds": "2026-01-15",
+#         "task_instance": MagicMock(task_id="extract_studies", try_number=1),
+#         "dag": MagicMock(dag_id="clinical_trials_etl"),
+#         "run_id": "manual__2026-01-15T00:00:00+00:00",
+#     }.get(key)
+#     context.__getitem__ = lambda self, key: {
+#         "ds": "2026-01-15",
+#         "task_instance": MagicMock(task_id="extract_studies", try_number=1),
+#         "dag": MagicMock(dag_id="clinical_trials_etl"),
+#         "run_id": "manual__2026-01-15T00:00:00+00:00",
+#     }.get(key)
+#     return context
 
 
 @pytest.fixture
